@@ -2,25 +2,15 @@ Prerender
 =========
 
 A very simple prerender docker container that utilize headless chrome in the background
+Fork from interactivesolutions/prerender.
+
 
 # Usage
 
-Download Jessie Frazelle' seccomp profile:
-
-`wget https://raw.githubusercontent.com/jfrazelle/dotfiles/master/etc/docker/seccomp/chrome.json -O ~/chrome.json`
-
-Run the container:
-
-`docker run --name prerender -p '127.0.0.1:3000:3000' --security-opt seccomp=$HOME/chrome.json --restart=always interactivesolutions/prerender`
-
-A few things to note, we are binding on 127.0.0.1 which means it's not accessible to remote connections, which is nice, no need for auth. And we also run it with restart always, because well... It's not the most stable project
-
-If the container is failing to start, you can try one of the following
-1. Utilize the --cap-add SYS_ADMIN flag
-2. Increase memory size with --shm-size=1g
+`make run`
 
 
-# Nginx configuration
+# Sample Nginx configuration
 
 Just make sure the `proxy_pass` matches the what you have in your run command
 
@@ -57,5 +47,4 @@ location @prerender {
         rewrite .* /index.html break;
     }
 }
-
 ```
