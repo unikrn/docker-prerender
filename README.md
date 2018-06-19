@@ -75,6 +75,7 @@ let sanitiseHeaders = {
 let removeHeaders = [
 ]
 
+
 function isTextHtml(rawHeaders) {
   let cType = rawHeaders.get("Content-Type");
   return cType &&  cType.indexOf("text/html") !== -1;
@@ -97,15 +98,19 @@ async function fetchAndApply(request) {
         if (ua.match(/googlebot|bingbot/i)) {
             securityHeaders  = Object.assign({}, securityHeaders, prerender_headers);
             requesturl = requesturl.replace(/(^\w+:|^)\/\//, '');
+            //requesturl = requesturl.split('?')[0];
             requesturl = prerender_base+requesturl;
+
+            //if the prerender does not return 200 -> ignore it
+            let newresponse = await fetch(requesturl,request);
+            if (newresponse.status != 200)
+                return response;
+
+            return newresponse;
         }
     }
 
-    let newresponse = fetch(requesturl,request);
-    if (newresponse.status != 200)
-        return response;
-
-    return newresponse;
+    return response;
 }
 
 async function addHeaders(req) {
@@ -136,4 +141,5 @@ async function addHeaders(req) {
         headers: newHdrs
     })
 }
+
 ```
