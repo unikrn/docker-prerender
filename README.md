@@ -6,7 +6,7 @@ Fork from interactivesolutions/prerender.
 
 It runs a 180 min caching nginx before the prerender. Which only caches on 200 and does 404 non normal prerender things. It also has a timeout of 5 seconds and does deliver stale if timeout etc.
 
-works with http://localhost/http://test.com but also works with http://localhost/http:/test.com
+works with http://localhost/https://test.com but also works with http://localhost/https/test.com
 
 # Usage
 
