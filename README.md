@@ -4,7 +4,7 @@ Prerender
 A very simple prerender docker container that utilize headless chrome in the background
 Fork from interactivesolutions/prerender.
 
-It runs a 60 min caching nginx before the prerender. Which only caches on 200 and does 404 non normal prerender things. It also has a timeout of 5 seconds and does deliver stale if timeout etc.
+It runs a 180 min caching nginx before the prerender. Which only caches on 200 and does 404 non normal prerender things. It also has a timeout of 5 seconds and does deliver stale if timeout etc.
 
 
 # Usage
