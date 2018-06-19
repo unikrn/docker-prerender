@@ -100,7 +100,12 @@ async function fetchAndApply(request) {
             requesturl = prerender_base+requesturl;
         }
     }
-    return fetch(requesturl,request)
+
+    let newresponse = fetch(requesturl,request);
+    if (newresponse.status != 200)
+        return response;
+
+    return newresponse;
 }
 
 async function addHeaders(req) {
