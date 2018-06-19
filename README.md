@@ -55,3 +55,80 @@ location @prerender {
     }
 }
 ```
+
+#Sample Cloudflare Worker inject
+```
+let prerender_base = 'http://prere-nderser-vice.com/https/';
+let prerender_headers = {
+          "preload": "1",
+          "Cache-Control": "no-cache"
+}
+
+let securityHeaders = {
+    "Content-Security-Policy" : "upgrade-insecure-requests"
+}
+
+let sanitiseHeaders = {
+    "Server" : "Server",
+}
+
+let removeHeaders = [
+]
+
+function isTextHtml(rawHeaders) {
+  let cType = rawHeaders.get("Content-Type");
+  return cType &&  cType.indexOf("text/html") !== -1;
+}
+
+addEventListener('fetch', event => {
+    event.respondWith(addHeaders(event.request))
+})
+
+async function fetchAndApply(request) {
+    let response = await fetch(request)
+    //fast exit if not html
+    if (!isTextHtml(response.headers)) {
+        return response;
+    }
+
+    let requesturl = request.url
+    const ua = request.headers.get('user-agent')
+    if (ua) {
+        if (ua.match(/googlebot|bingbot/i)) {
+            securityHeaders  = Object.assign({}, securityHeaders, prerender_headers);
+            requesturl = requesturl.replace(/(^\w+:|^)\/\//, '');
+            requesturl = prerender_base+requesturl;
+        }
+    }
+    return fetch(requesturl,request)
+}
+
+async function addHeaders(req) {
+    let response = await fetchAndApply(req)
+    let newHdrs = new Headers(response.headers)
+
+    if (!isTextHtml(newHdrs)) {
+        return new Response(response.body , {
+            status: response.status,
+            statusText: response.statusText,
+            headers: newHdrs
+        })
+    }
+
+    let setHeaders = Object.assign({}, securityHeaders, sanitiseHeaders)
+
+    Object.keys(setHeaders).forEach(name => {
+        newHdrs.set(name, setHeaders[name]);
+    })
+
+    removeHeaders.forEach(name => {
+        newHdrs.delete(name)
+    })
+
+    return new Response(response.body , {
+        status: response.status,
+        statusText: response.statusText,
+        headers: newHdrs
+    })
+}
+```
