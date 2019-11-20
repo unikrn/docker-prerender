@@ -3,6 +3,46 @@ prerender:
     security_opt: 
        - seccomp:chrome.json
     restart: always
+prerender2:
+    build: ./prerender
+    security_opt: 
+       - seccomp:chrome.json
+    restart: always
+prerender3:
+    build: ./prerender
+    security_opt: 
+       - seccomp:chrome.json
+    restart: always
+prerender4:
+    build: ./prerender
+    security_opt: 
+       - seccomp:chrome.json
+    restart: always
+prerender5:
+    build: ./prerender
+    security_opt: 
+       - seccomp:chrome.json
+    restart: always
+prerender6:
+    build: ./prerender
+    security_opt: 
+       - seccomp:chrome.json
+    restart: always
+prerender7:
+    build: ./prerender
+    security_opt: 
+       - seccomp:chrome.json
+    restart: always
+prerender8:
+    build: ./prerender
+    security_opt: 
+       - seccomp:chrome.json
+    restart: always
+prerender9:
+    build: ./prerender
+    security_opt: 
+       - seccomp:chrome.json
+    restart: always
 nginx:
     restart: always
     build: ./nginx
@@ -12,3 +52,12 @@ nginx:
       - "3000:8080"
     links:
         - prerender
+        - prerender2
+        - prerender3
+        - prerender4
+        - prerender5
+        - prerender6
+        - prerender7
+        - prerender8
+        - prerender9
+        

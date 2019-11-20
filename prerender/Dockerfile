@@ -35,8 +35,10 @@ RUN git clone https://github.com/prerender/prerender.git
 # Install dependencies
 RUN cd prerender && npm install;
 
+COPY server_unikrn.js /home/prerender/prerender/
+
 # Incase we want to link something
 EXPOSE 3000
 
 # Default command
-CMD ["node", "prerender/server.js"]
+CMD ["node", "prerender/server_unikrn.js"]
